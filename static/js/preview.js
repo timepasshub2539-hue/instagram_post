@@ -29,7 +29,7 @@ function updateDots() {
 }
 
 function goToSlide(idx) {
-  currentSlide = Math.max(0, Math.min(idx, 4));
+  currentSlide = Math.max(0, Math.min(idx, 5));
   const track = document.getElementById("slides-track");
   track.style.transform = `translateX(-${currentSlide * 100}%)`;
   updateDots();
@@ -38,7 +38,7 @@ function goToSlide(idx) {
 function renderImages() {
   const track = document.getElementById("slides-track");
   track.innerHTML = "";
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     const item = document.createElement("div");
     item.className = "slide-item";
     if (images[i]) {
@@ -49,10 +49,13 @@ function renderImages() {
     } else {
       const ph = document.createElement("div");
       ph.className = "slide-placeholder";
-      ph.textContent = `Slide ${i + 1}`;
+      ph.textContent = i === 5 ? "Follow Reminder" : `Slide ${i + 1}`;
       item.appendChild(ph);
     }
-    item.addEventListener("click", () => openEditor(i));
+    // Slide 6 is auto-generated — not editable
+    if (i < 5) {
+      item.addEventListener("click", () => openEditor(i));
+    }
     track.appendChild(item);
   }
   goToSlide(currentSlide);

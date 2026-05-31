@@ -52,6 +52,11 @@ def schedule_page():
     return FileResponse("static/schedule.html")
 
 
+@app.get("/follow")
+def follow_page():
+    return FileResponse("static/follow.html")
+
+
 @app.get("/settings")
 def settings_page():
     return FileResponse("static/settings.html")

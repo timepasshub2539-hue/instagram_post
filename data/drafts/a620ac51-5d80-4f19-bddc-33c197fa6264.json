@@ -1,0 +1,35 @@
+{
+  "id": "a620ac51-5d80-4f19-bddc-33c197fa6264",
+  "created_at": "2026-05-31T15:10:07.773570",
+  "mood": "Overthinking",
+  "user_context": "",
+  "hook": "You\u2019re tired of having to perform happiness all the time.",
+  "slide2": "I hate when people say 'it\u2019ll be okay' like it\u2019s some magic fix. What if it\u2019s not?",
+  "slide3": "My chest feels heavy today. Not sadness, just\u2026 this quiet ache that won\u2019t go away.",
+  "slide4": "Why do I always compare my behind-the-scenes to everyone\u2019s highlight reel?",
+  "closer": "What\u2019s one thing you\u2019ve been too afraid to admit out loud?",
+  "caption": "Sometimes the only thing missing is permission to not be okay. What\u2019s one emotion you\u2019ve been pretending doesn\u2019t exist? \ud83d\udc80\n\n#GenZFeels #NotOkayIsOkay #BehindTheGlow #IndianMood #RealTalk",
+  "hashtags": [
+    "genzfeels",
+    "notokayisokay",
+    "behindtheglow",
+    "indianmood",
+    "realtalk",
+    "emotionalhonesty",
+    "mentalhealthmatters",
+    "thesadtruth"
+  ],
+  "design": {
+    "theme": "dark",
+    "font": "Poppins",
+    "font_size_body": 48,
+    "font_size_large": 72,
+    "background_color": "#0d0d0d",
+    "text_color": "#f5f5f5",
+    "accent_color": "#a78bfa",
+    "text_align": "center",
+    "handle": "Unleash_Your_Legacy_"
+  },
+  "scheduled_for": null,
+  "status": "draft"
+}

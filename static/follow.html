@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Follow Reminder — JournalDrop</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <style>
+    .follow-warning-banner {
+      background: linear-gradient(135deg, rgba(248,113,113,0.15) 0%, rgba(167,139,250,0.15) 100%);
+      border: 1px solid rgba(248,113,113,0.4);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .follow-warning-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .follow-warning-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--error);
+      margin-bottom: 6px;
+    }
+
+    .follow-warning-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .follow-handle-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .follow-handle-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .follow-handle-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .follow-handle-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .btn-follow {
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      color: #fff;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 24px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: opacity 0.15s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      text-decoration: none;
+      margin-bottom: 12px;
+    }
+
+    .btn-follow:hover { opacity: 0.92; }
+    .btn-follow:active { transform: scale(0.98); }
+
+    .miss-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .miss-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .miss-list li:last-child { border-bottom: none; }
+
+    .miss-list .miss-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .copy-caption-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      position: relative;
+    }
+
+    .copy-caption-box:hover { border-color: var(--accent); }
+
+    .copy-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .urgency-pulse {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--error);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 1.4s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .no-handle-notice {
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 13px;
+      color: #fbbf24;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* ── Story Card ── */
+    .story-card {
+      position: relative;
+      background: linear-gradient(160deg, #1a0533 0%, #0d0d0d 60%, #1a0010 100%);
+      border: 1px solid rgba(167,139,250,0.25);
+      border-radius: 20px;
+      padding: 32px 24px 24px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .story-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .story-card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .story-card-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.4s ease infinite;
+    }
+
+    .story-card-text {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.55;
+      color: #fff;
+      white-space: pre-wrap;
+      letter-spacing: -0.2px;
+    }
+
+    .story-card-text .highlight {
+      color: var(--accent);
+    }
+
+    .story-card-copy {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .story-card-copy button {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(167,139,250,0.35);
+      background: rgba(167,139,250,0.1);
+      color: var(--accent);
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .story-card-copy button:hover {
+      background: rgba(167,139,250,0.2);
+      border-color: var(--accent);
+    }
+
+    .story-card-copy button:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">Follow Reminder</div>
+    <div class="page-subtitle">One tap now — or lose this content forever</div>
+  </div>
+
+  <!-- Story Card -->
+  <div class="story-card">
+    <div class="story-card-label">Your follow-reminder post</div>
+    <div class="story-card-text" id="story-card-text">⚠️ If you're not following <span class="highlight" id="story-handle">@unleash_your_legacy1</span> yet — this is your sign.
+
+Once you scroll past, Instagram won't show my posts again.</div>
+    <div class="story-card-copy">
+      <button onclick="copyStoryCard()">Copy text</button>
+      <button onclick="copyWithEmoji()">Copy + emoji</button>
+    </div>
+  </div>
+
+  <!-- Warning Banner -->
+  <div class="follow-warning-banner">
+    <div class="follow-warning-icon">⚠️</div>
+    <div class="follow-warning-title">Don't Scroll Past This</div>
+    <div class="follow-warning-text">
+      Instagram's algorithm will <strong style="color:var(--error)">hide this account</strong> from you if you don't follow.
+      No follow = no future posts in your feed. They're gone.
+    </div>
+  </div>
+
+  <!-- No handle notice (shown if handle not set) -->
+  <div class="no-handle-notice hidden" id="no-handle-notice">
+    Your Instagram handle is not set. Go to
+    <a href="/settings" style="color:#fbbf24;text-decoration:underline;">Settings</a>
+    to add it so this page works correctly.
+  </div>
+
+  <!-- Handle Card -->
+  <div class="follow-handle-card">
+    <div class="follow-handle-label">Follow this account</div>
+    <div class="follow-handle-value" id="handle-display">@your_handle</div>
+    <div class="follow-handle-sub" id="niche-display">Content creator</div>
+  </div>
+
+  <!-- Follow CTA Button -->
+  <a id="follow-btn" href="#" target="_blank" class="btn-follow">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+    Follow on Instagram
+  </a>
+
+  <!-- What they'll miss -->
+  <div class="settings-section">
+    <h3>What you'll miss without following</h3>
+    <ul class="miss-list">
+      <li>
+        <span class="miss-icon">📱</span>
+        <span>New carousel posts dropped daily — tips, stories, and insights you won't find anywhere else</span>
+      </li>
+      <li>
+        <span class="miss-icon">🔥</span>
+        <span>Trending content before it goes viral — early followers get first access</span>
+      </li>
+      <li>
+        <span class="miss-icon">🎯</span>
+        <span>The algorithm will bury this account in your feed within days if you don't follow now</span>
+      </li>
+      <li>
+        <span class="miss-icon">💡</span>
+        <span>Future posts, series, and updates — all invisible to non-followers over time</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Copyable Caption for Stories / Captions -->
+  <div class="settings-section">
+    <h3>Copy a follow-reminder caption</h3>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;line-height:1.6;">
+      Tap the box below to copy it — paste into your next post caption or story to remind your audience.
+    </p>
+    <div class="copy-caption-box" id="copy-caption" onclick="copyCaption()">
+<span id="caption-text">⚠️ If you're not following yet — this is your sign.
+
+Once you scroll past, Instagram won't show you my posts again.
+
+One tap on Follow = you never miss a post 📲
+
+Save this. Share it. Follow now. ✅</span>
+    </div>
+    <div class="copy-hint" id="copy-hint">Tap to copy</div>
+  </div>
+
+  <!-- Live Urgency Indicator -->
+  <div class="settings-section" style="text-align:center;">
+    <div style="font-size:14px;color:var(--text-secondary);line-height:1.8;">
+      <span class="urgency-pulse"></span>
+      <strong style="color:var(--text);">Reminder:</strong> people who see your posts but don't follow
+      have a <strong style="color:var(--error);">very low chance</strong> of seeing you again.
+      Use this page link in your stories or bio.
+    </div>
+
+    <div style="margin-top:20px;">
+      <button class="btn btn-secondary" onclick="copyPageLink()" style="width:100%;">
+        Copy this page's link
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a href="/drafts" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Drafts
+  </a>
+  <a href="/schedule" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Schedule
+  </a>
+  <a href="/follow" class="nav-item active">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
+    Follow
+  </a>
+  <a href="/settings" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    Settings
+  </a>
+</nav>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="/static/js/app.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const s = await apiFetch("/api/settings");
+    const handle = s.instagram_handle || "";
+    const niche = s.niche || "";
+
+    if (!handle) {
+      document.getElementById("no-handle-notice").classList.remove("hidden");
+      document.getElementById("follow-btn").setAttribute("href", "https://www.instagram.com/");
+    } else {
+      const cleanHandle = handle.replace(/^@/, "");
+      document.getElementById("handle-display").textContent = "@" + cleanHandle;
+      document.getElementById("follow-btn").setAttribute(
+        "href",
+        "https://www.instagram.com/" + cleanHandle + "/"
+      );
+
+      const captionEl = document.getElementById("caption-text");
+      captionEl.textContent =
+        `⚠️ If you're not following @${cleanHandle} yet — this is your sign.\n\n` +
+        `Once you scroll past, Instagram won't show my posts again.\n\n` +
+        `One tap on Follow = you never miss a post 📲\n\n` +
+        `Save this. Share it. Follow now. ✅`;
+    }
+
+    if (niche) {
+      document.getElementById("niche-display").textContent = niche;
+    }
+
+    if (handle) {
+      const cleanHandle = handle.replace(/^@/, "");
+      const storyHandleEl = document.getElementById("story-handle");
+      if (storyHandleEl) storyHandleEl.textContent = "@" + cleanHandle;
+    }
+  } catch (_) {}
+});
+
+function copyCaption() {
+  const text = document.getElementById("caption-text").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById("copy-hint").textContent = "Copied!";
+    Toast.show("Caption copied to clipboard", "success");
+    setTimeout(() => {
+      document.getElementById("copy-hint").textContent = "Tap to copy";
+    }, 2000);
+  }).catch(() => {
+    Toast.show("Copy failed — select and copy manually", "error");
+  });
+}
+
+function copyPageLink() {
+  const url = window.location.origin + "/follow";
+  navigator.clipboard.writeText(url).then(() => {
+    Toast.show("Link copied! Share it in your bio or story", "success");
+  }).catch(() => {
+    Toast.show("Copy failed", "error");
+  });
+}
+</script>
+</body>
+</html>

@@ -155,6 +155,89 @@ def render_slide(
     return img
 
 
+def render_follow_slide(handle: str, design: dict) -> Image.Image:
+    """Renders the 6th follow-reminder slide."""
+    bg_color     = _hex_to_rgb(design.get("background_color", DARK_THEME["background_color"]))
+    accent_color = _hex_to_rgb(design.get("accent_color",     DARK_THEME["accent_color"]))
+    font_name    = design.get("font", "DMSans")
+
+    img  = Image.new("RGB", CANVAS_SIZE, color=bg_color)
+    draw = ImageDraw.Draw(img)
+
+    # Accent bar at top
+    draw.rectangle([(80, 60), (200, 68)], fill=accent_color)
+
+    # Subtle accent glow in top-right corner
+    for r in range(220, 0, -20):
+        alpha = int(30 * (r / 220))
+        draw.ellipse(
+            [(CANVAS_SIZE[0] - r, -r), (CANVAS_SIZE[0] + r, r)],
+            fill=(*accent_color, alpha),
+        )
+
+    font_warn   = _load_font(font_name, 80)
+    font_large  = _load_font(font_name, 52)
+    font_body   = _load_font(font_name, 38)
+    font_small  = _load_font(font_name, 28)
+
+    MARGIN_X  = 80
+    MAX_WIDTH = CANVAS_SIZE[0] - MARGIN_X * 2
+
+    clean_handle = handle.lstrip("@") if handle else ""
+    handle_tag   = f"@{clean_handle}" if clean_handle else ""
+
+    # Warning emoji line
+    draw.text((MARGIN_X, 140), "⚠️", font=font_warn, fill=_hex_to_rgb("#f87171"))
+
+    # Main headline
+    headline = f"If you're not following {handle_tag} yet —"
+    y = draw_wrapped_text(
+        draw, headline, font_large, _hex_to_rgb("#f5f5f5"),
+        x=MARGIN_X, y=260, max_width=MAX_WIDTH,
+        line_spacing=18, align="left",
+    )
+
+    # Accent line
+    draw.text((MARGIN_X, y + 10), "this is your sign.", font=font_large, fill=accent_color)
+    y += 90
+
+    # Divider
+    draw.rectangle([(MARGIN_X, y + 20), (MARGIN_X + 60, y + 26)], fill=accent_color)
+    y += 60
+
+    # Body line 1
+    body1 = "Once you scroll past, Instagram"
+    y = draw_wrapped_text(
+        draw, body1, font_body, _hex_to_rgb("#cccccc"),
+        x=MARGIN_X, y=y, max_width=MAX_WIDTH,
+        line_spacing=14, align="left",
+    )
+    # Body line 2 — emphasised
+    draw.text((MARGIN_X, y), "won't show my posts again.", font=font_body, fill=_hex_to_rgb("#f87171"))
+    y += 60
+
+    # CTA pill
+    cta_text  = "TAP FOLLOW NOW  →"
+    cta_bbox  = draw.textbbox((0, 0), cta_text, font=font_small)
+    cta_w     = cta_bbox[2] - cta_bbox[0] + 48
+    cta_h     = cta_bbox[3] - cta_bbox[1] + 24
+    cta_x     = MARGIN_X
+    cta_y     = y + 40
+    draw.rounded_rectangle(
+        [(cta_x, cta_y), (cta_x + cta_w, cta_y + cta_h)],
+        radius=12, fill=accent_color,
+    )
+    draw.text(
+        (cta_x + 24, cta_y + 12), cta_text,
+        font=font_small, fill=_hex_to_rgb("#0a0a0a"),
+    )
+
+    # Slide counter bottom-right
+    draw.text((980, 1030), "6/6", font=font_small, fill=accent_color, anchor="rb")
+
+    return img
+
+
 def render_all_slides(carousel_data: dict, design: dict, handle: str) -> list:
     slides_text = [
         carousel_data.get("hook",   ""),
@@ -163,8 +246,10 @@ def render_all_slides(carousel_data: dict, design: dict, handle: str) -> list:
         carousel_data.get("slide4", ""),
         carousel_data.get("closer", ""),
     ]
-    return [render_slide(text, i + 1, len(slides_text), design, handle)
-            for i, text in enumerate(slides_text)]
+    slides = [render_slide(text, i + 1, 6, design, handle)
+              for i, text in enumerate(slides_text)]
+    slides.append(render_follow_slide(handle, design))
+    return slides
 
 
 def images_to_base64(images: list) -> list:

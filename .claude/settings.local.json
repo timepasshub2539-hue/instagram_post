@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\ADMIN\\\\New folder\\\\instagram_post\" -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\ADMIN\\\\New folder\\\\instagram_post\" -Recurse -Force | Select-Object FullName | ForEach-Object { $_.FullName })"
+    ]
+  }
+}
