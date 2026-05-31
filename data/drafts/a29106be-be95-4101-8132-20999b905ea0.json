@@ -1,0 +1,35 @@
+{
+  "id": "a29106be-be95-4101-8132-20999b905ea0",
+  "created_at": "2026-05-30T12:26:04.157797",
+  "mood": "Career Pressure",
+  "user_context": "",
+  "hook": "Everyone has a plan for my life except me.",
+  "slide2": "I opened LinkedIn today and immediately felt like I was failing. Everyone is getting promoted, switching to better jobs, doing their MBA abroad. And I'm just here trying to survive the week.",
+  "slide3": "My parents don't say it directly but I can feel the weight of their expectations in every phone call. 'What's next beta?' I don't know. I genuinely don't know and that scares me more than I admit.",
+  "slide4": "The worst part is I can't even tell if I'm unhappy with my career or just exhausted from pretending I have it figured out. There's a difference and I think about it at 2am more than I should.",
+  "closer": "Is it your dream you're chasing or someone else's?",
+  "caption": "Some days I'm okay. Other days I see a cousin's LinkedIn post and suddenly question every choice I've ever made.\n\nCareer pressure hits different when you genuinely don't know what you want but the world keeps asking you to decide faster.\n\nIf you're also just figuring it out quietly, this one's for you.\n\nWhat's one career thing you wish you could be honest about?",
+  "hashtags": [
+    "careerlife",
+    "indianmillennials",
+    "quarterlifecrisis",
+    "mentalhealthmatters",
+    "realtalk",
+    "indianyouth",
+    "worklifebalance",
+    "justbeingreal"
+  ],
+  "design": {
+    "theme": "light",
+    "font": "PlayfairDisplay",
+    "font_size_body": 48,
+    "font_size_large": 72,
+    "background_color": "#fafafa",
+    "text_color": "#1a1a1a",
+    "accent_color": "#7c3aed",
+    "text_align": "center",
+    "handle": ""
+  },
+  "scheduled_for": null,
+  "status": "draft"
+}

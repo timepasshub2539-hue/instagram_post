@@ -1,0 +1,35 @@
+{
+  "id": "d52561b2-cda4-4641-88a5-970122d54754",
+  "created_at": "2026-05-30T14:17:28.869810",
+  "mood": "Sunday Anxiety",
+  "user_context": "",
+  "hook": "The quiet before the panic hits harder.",
+  "slide2": "I keep checking my watch even though I have nowhere to go. The silence in the room is louder than my thoughts.",
+  "slide3": "What if today\u2019s the day I actually crack? Not like crying into a pillow\u2014like screaming into an empty house.",
+  "slide4": "I hate how clean this apartment looks when my head doesn\u2019t match. Like a perfectly staged Instagram versus the 3am spiral.",
+  "closer": "Who else just needs this day to be over?",
+  "caption": "Sunday mornings shouldn\u2019t feel like a countdown. Do you also hate how peaceful everything looks when you\u2019re not?",
+  "hashtags": [
+    "sundayanxiety",
+    "mentalhealthindia",
+    "3amthoughts",
+    "quietpanic",
+    "indianmillennial",
+    "sundayvibes",
+    "emptyhousefeels",
+    "delhinoir"
+  ],
+  "design": {
+    "theme": "dark",
+    "font": "DMSans",
+    "font_size_body": 56,
+    "font_size_large": 80,
+    "background_color": "#0d0d0d",
+    "text_color": "#f5f5f5",
+    "accent_color": "#a78bfa",
+    "text_align": "center",
+    "handle": "Unleash_Your_Legacy_"
+  },
+  "scheduled_for": null,
+  "status": "draft"
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — JournalDrop</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+</head>
+<body>
+
+<div class="page" style="padding-bottom: 120px;">
+  <div class="page-header" style="display:flex;align-items:center;gap:12px;">
+    <a href="/" style="color:var(--text-secondary);font-size:20px;">←</a>
+    <div>
+      <div class="page-title" id="page-mood">Loading...</div>
+      <div class="page-subtitle">Tap a slide to edit • Swipe to navigate</div>
+    </div>
+  </div>
+
+  <!-- Phone Frame -->
+  <div class="phone-frame-wrapper">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" id="phone-screen">
+        <div class="slides-track" id="slides-track">
+          <!-- Slide items injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dot Indicators -->
+  <div class="dots">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <!-- Caption & Hashtags -->
+  <div class="caption-box">
+    <h3>Caption</h3>
+    <div class="caption-text" id="caption-text"></div>
+    <div class="hashtags-row" id="hashtags-row"></div>
+  </div>
+</div>
+
+<!-- Export / Design Actions -->
+<div class="export-actions">
+  <button id="design-btn" class="btn btn-secondary" style="flex:1;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    Design
+  </button>
+  <button id="export-btn" class="btn btn-primary" style="flex:2;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Export All (ZIP)
+  </button>
+</div>
+
+<!-- Slide Editor Modal -->
+<div id="editor-modal" class="slide-editor-modal hidden">
+  <div class="slide-editor-panel">
+    <h3 id="editor-title">Edit Slide</h3>
+    <textarea id="editor-textarea" rows="5"></textarea>
+    <div style="display:flex;gap:10px;">
+      <button id="editor-close-btn" class="btn btn-secondary" style="flex:1;">Cancel</button>
+      <button id="editor-save-btn" class="btn btn-primary" style="flex:2;">Save & Re-render</button>
+    </div>
+  </div>
+</div>
+
+<!-- Design Panel Modal -->
+<div id="design-modal" class="design-panel-modal hidden">
+  <div class="design-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2>Design</h2>
+      <button id="design-close-btn" class="btn btn-secondary" style="padding:8px 16px;">✕</button>
+    </div>
+
+    <div class="design-section">
+      <label>Theme</label>
+      <div class="option-row">
+        <div class="option-chip selected" data-group="theme" data-value="dark">Dark</div>
+        <div class="option-chip" data-group="theme" data-value="light">Light</div>
+      </div>
+    </div>
+
+    <div class="design-section">
+      <label>Font</label>
+      <div class="option-row">
+        <div class="option-chip selected" data-group="font" data-value="DMSans">DM Sans</div>
+        <div class="option-chip" data-group="font" data-value="Poppins">Poppins</div>
+        <div class="option-chip" data-group="font" data-value="Raleway">Raleway</div>
+        <div class="option-chip" data-group="font" data-value="Nunito">Nunito</div>
+        <div class="option-chip" data-group="font" data-value="PlayfairDisplay">Playfair</div>
+        <div class="option-chip" data-group="font" data-value="SourceCodePro">Mono</div>
+      </div>
+    </div>
+
+    <div class="design-section">
+      <label>Font Size</label>
+      <div class="option-row">
+        <div class="option-chip" data-group="size" data-value="small">Small</div>
+        <div class="option-chip selected" data-group="size" data-value="medium">Medium</div>
+        <div class="option-chip" data-group="size" data-value="large">Large</div>
+      </div>
+    </div>
+
+    <div class="design-section">
+      <label>Text Align</label>
+      <div class="option-row">
+        <div class="option-chip selected" data-group="align" data-value="left">Left</div>
+        <div class="option-chip" data-group="align" data-value="center">Center</div>
+      </div>
+    </div>
+
+    <button id="design-apply-btn" class="btn btn-primary" style="margin-top:8px;">Apply & Re-render</button>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a href="/drafts" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Drafts
+  </a>
+  <a href="/schedule" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Schedule
+  </a>
+  <a href="/settings" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    Settings
+  </a>
+</nav>
+
+<script src="/static/js/app.js"></script>
+<script src="/static/js/preview.js"></script>
+</body>
+</html>
