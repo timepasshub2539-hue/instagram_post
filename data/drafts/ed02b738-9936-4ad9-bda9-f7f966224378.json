@@ -1,0 +1,35 @@
+{
+  "id": "ed02b738-9936-4ad9-bda9-f7f966224378",
+  "created_at": "2026-06-01T10:11:47.206869",
+  "mood": "Overthinking",
+  "user_context": "i am filing like i am nothing",
+  "hook": "Nobody talks about how it feels to be invisible in plain sight.",
+  "slide2": "I spent an hour rearranging my bookshelf today. Not because they were messy, but because I thought if I ordered them just right, I\u2019d feel less messy too.",
+  "slide3": "My reflection in the window at 3am looks like a stranger. I don\u2019t even recognize the person staring back.",
+  "slide4": "I pretended to laugh at a joke a coworker made today. Not because it was funny, but because I didn\u2019t want to explain why I didn\u2019t.",
+  "closer": "What small thing makes you feel seen lately?",
+  "caption": "Sometimes the weight isn\u2019t in the big moments. It\u2019s in the quiet ones\u2014the way your tea gets cold because you zoned out mid-sip, or how you nod along to convos you didn\u2019t hear. Today felt like that. Everything blurred together, and I wondered if anyone would notice if I just\u2026 disappeared. \nEver been there too?",
+  "hashtags": [
+    "quietstruggles",
+    "3amtalk",
+    "invisibledays",
+    "youareenough",
+    "feelingsdontlie",
+    "whatsthepoint",
+    "indianthoughts",
+    "smallthings"
+  ],
+  "design": {
+    "theme": "dark",
+    "font": "Poppins",
+    "font_size_body": 48,
+    "font_size_large": 72,
+    "background_color": "#0d0d0d",
+    "text_color": "#f5f5f5",
+    "accent_color": "#a78bfa",
+    "text_align": "center",
+    "handle": "unleash_your_legacy1"
+  },
+  "scheduled_for": null,
+  "status": "draft"
+}

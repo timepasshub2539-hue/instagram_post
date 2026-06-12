@@ -1,13 +1,13 @@
-import os
 import json
 from openai import OpenAI, AuthenticationError, RateLimitError
 from services.prompts import build_prompt
+from services.api_keys import get_key
 
 MISTRAL_BASE_URL = "https://api.mistral.ai/v1"
 
 
 def generate_with_mistral(mood: str, user_context: str, model: str = "mistral-small-latest") -> dict:
-    api_key = os.getenv("MISTRAL_API_KEY")
+    api_key = get_key("MISTRAL_API_KEY", "mistral_api_key")
     if not api_key:
         raise ValueError("Add your Mistral API key in Settings to use Mistral")
 

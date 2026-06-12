@@ -1,11 +1,11 @@
-import os
 import json
 import anthropic
 from services.prompts import build_prompt
+from services.api_keys import get_key
 
 
 def generate_with_claude(mood: str, user_context: str) -> dict:
-    api_key = os.getenv("ANTHROPIC_API_KEY")
+    api_key = get_key("ANTHROPIC_API_KEY", "anthropic_api_key")
     if not api_key:
         raise ValueError("Add your Claude API key in Settings to use online mode")
 

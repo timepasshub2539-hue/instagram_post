@@ -20,6 +20,9 @@ DEFAULTS = {
     "posting_time_2": "21:00",
     "niche": "",
     "onboarding_complete": False,
+    "anthropic_api_key": "",
+    "openai_api_key": "",
+    "mistral_api_key": "",
 }
 
 
@@ -52,9 +55,9 @@ def get_settings():
 
     return {
         **data,
-        "claude_available":   bool(os.getenv("ANTHROPIC_API_KEY")),
-        "openai_available":   bool(os.getenv("OPENAI_API_KEY")),
-        "mistral_available":  bool(os.getenv("MISTRAL_API_KEY")),
+        "claude_available":   bool(os.getenv("ANTHROPIC_API_KEY") or data.get("anthropic_api_key")),
+        "openai_available":   bool(os.getenv("OPENAI_API_KEY")    or data.get("openai_api_key")),
+        "mistral_available":  bool(os.getenv("MISTRAL_API_KEY")   or data.get("mistral_api_key")),
         "ollama_available":   _ping(f"{os.getenv('OLLAMA_BASE_URL','http://localhost:11434')}/api/tags"),
         "lmstudio_available": _ping(f"{lmstudio_url}/models"),
     }

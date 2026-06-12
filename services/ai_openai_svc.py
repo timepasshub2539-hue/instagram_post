@@ -1,11 +1,11 @@
-import os
 import json
 from openai import OpenAI, AuthenticationError, RateLimitError
 from services.prompts import build_prompt
+from services.api_keys import get_key
 
 
 def generate_with_openai(mood: str, user_context: str, model: str = "gpt-4o-mini") -> dict:
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = get_key("OPENAI_API_KEY", "openai_api_key")
     if not api_key:
         raise ValueError("Add your OpenAI API key in Settings to use OpenAI")
 
